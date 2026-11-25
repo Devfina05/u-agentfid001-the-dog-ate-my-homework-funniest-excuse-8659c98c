@@ -22,6 +22,9 @@ function validateExcuse(line: string): string {
   if (text.length === 0) {
     throw new Error("excuse must not be empty");
   }
+  if (!/[A-Za-z]/.test(text)) {
+    throw new Error("excuse must contain at least one letter");
+  }
   if (text.includes("\n")) {
     throw new Error("excuse must be a single line");
   }
@@ -51,7 +54,8 @@ function main(): void {
   const dir = outputDir();
   const target = join(dir, "entry.txt");
   writeFileSync(target, text, "utf8");
-  console.log(`Wrote ${text.length} characters to ${target}`);
+  const bytes = Buffer.byteLength(text, "utf8");
+  console.log(`Wrote ${text.length} characters (${bytes} bytes) to ${target}`);
   console.log(text);
 }
 
